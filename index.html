@@ -11,12 +11,18 @@ serviceWorkerParam: { scope: '/school-calender-push/' }
 
   if(!OneSignal.Notifications.isPushSupported()){status.textContent='이 환경에서는 푸시를 사용할 수 없습니다. 지원 브라우저 또는 홈 화면 앱에서 열어 주세요.';return;}
   const sub=OneSignal.User.PushSubscription;
-  const update=()=>{status.textContent=(sub.optedIn&&sub.id)?'이 기기에 알림이 등록됐습니다.':'아직 알림이 등록되지 않았습니다. 차단된 경우 브라우저 설정에서 권한을 확인하세요.';};
-  sub.addEventListener('change',update);
-  on.disabled=off.disabled=false;
-  on.onclick=async()=>{try{await sub.optIn();update();}catch(e){status.textContent='알림 등록 실패. 사이트 알림 권한을 확인하세요.';}};
-  off.onclick=async()=>{try{await sub.optOut();update();}catch(e){status.textContent='알림을 끄지 못했습니다. 사이트 설정을 확인하세요.';}};
-  update();
+  const update = () => {
+  const permission = {
+    granted: '허용됨',
+    denied: '차단됨',
+    default: '아직 선택되지 않음'
+  }[Notification.permission] || '확인 불가';
+
+  status.textContent =
+    '알림 권한: ' + permission +
+    ' · OneSignal 구독: ' + (sub.optedIn ? '켜짐' : '꺼짐') +
+    ' · 구독 ID: ' + (sub.id ? '있음' : '없음');
+};
  }catch(e){status.textContent='알림 초기화 실패: '+(e?.message || String(e));}
 });
 </script></html>
