@@ -5,8 +5,8 @@ window.OneSignalDeferred.push(async function(OneSignal){
  try{
   await OneSignal.init({
   appId: '47b2c26b-23d6-4132-93b6-0ff423ce13ea',
-  serviceWorkerPath: '/school-calendar-push/OneSignalSDKWorker.js',
-  serviceWorkerParam: { scope: '/school-calendar-push/' }
+  serviceWorkerPath: '/school-calender-push/OneSignalSDKWorker.js',
+serviceWorkerParam: { scope: '/school-calender-push/' }
 });
 
   if(!OneSignal.Notifications.isPushSupported()){status.textContent='이 환경에서는 푸시를 사용할 수 없습니다. 지원 브라우저 또는 홈 화면 앱에서 열어 주세요.';return;}
