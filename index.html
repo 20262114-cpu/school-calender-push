@@ -3,7 +3,12 @@ window.OneSignalDeferred=window.OneSignalDeferred||[];
 window.OneSignalDeferred.push(async function(OneSignal){
  const status=document.getElementById('status'),on=document.getElementById('on'),off=document.getElementById('off');
  try{
-  await OneSignal.init({appId:'여기에_ONESIGNAL_APP_ID'});
+  await OneSignal.init({
+  appId: '여기에_ONESIGNAL_APP_ID',
+  serviceWorkerPath: '/school-calendar-push/OneSignalSDKWorker.js',
+  serviceWorkerParam: { scope: '/school-calendar-push/' }
+});
+
   if(!OneSignal.Notifications.isPushSupported()){status.textContent='이 환경에서는 푸시를 사용할 수 없습니다. 지원 브라우저 또는 홈 화면 앱에서 열어 주세요.';return;}
   const sub=OneSignal.User.PushSubscription;
   const update=()=>{status.textContent=(sub.optedIn&&sub.id)?'이 기기에 알림이 등록됐습니다.':'아직 알림이 등록되지 않았습니다. 차단된 경우 브라우저 설정에서 권한을 확인하세요.';};
