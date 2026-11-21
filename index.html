@@ -22,7 +22,30 @@ serviceWorkerParam: { scope: '/school-calender-push/' }
     '알림 권한: ' + permission +
     ' · OneSignal 구독: ' + (sub.optedIn ? '켜짐' : '꺼짐') +
     ' · 구독 ID: ' + (sub.id ? '있음' : '없음');
-};
+};sub.addEventListener('change', update);
+
+  on.onclick = async () => {
+    status.textContent = '알림을 등록하는 중…';
+    try {
+      await sub.optIn();
+      update();
+    } catch (e) {
+      status.textContent = '알림 등록 실패: ' + (e?.message || String(e));
+    }
+  };
+
+  off.onclick = async () => {
+    try {
+      await sub.optOut();
+      update();
+    } catch (e) {
+      status.textContent = '알림 해제 실패: ' + (e?.message || String(e));
+    }
+  };
+
+  on.disabled = false;
+  off.disabled = false;
+  update();
  }catch(e){status.textContent='알림 초기화 실패: '+(e?.message || String(e));}
 });
 </script></html>
