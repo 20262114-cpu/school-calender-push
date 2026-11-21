@@ -17,6 +17,6 @@ window.OneSignalDeferred.push(async function(OneSignal){
   on.onclick=async()=>{try{await sub.optIn();update();}catch(e){status.textContent='알림 등록 실패. 사이트 알림 권한을 확인하세요.';}};
   off.onclick=async()=>{try{await sub.optOut();update();}catch(e){status.textContent='알림을 끄지 못했습니다. 사이트 설정을 확인하세요.';}};
   update();
- }catch(e){status.textContent='알림 초기화 실패. App ID와 HTTPS 사이트 설정을 확인하세요.';}
+ }catch(e){status.textContent='알림 초기화 실패: '+(e?.message || String(e));}
 });
 </script></html>
