@@ -1,0 +1,17 @@
+<!doctype html><html lang="ko"><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><link rel="manifest" href="manifest.webmanifest"><title>스쿨 캘린더 알림 등록</title><style>body{max-width:38rem;margin:3rem auto;padding:0 1.2rem;font:1.125rem/1.6 system-ui;color:#172540}button{font:inherit;padding:.8rem 1rem;margin:.3rem;background:#2149b7;color:white;border:0;border-radius:.5rem}button:disabled{opacity:.6}</style><h1>스쿨 캘린더 알림</h1><p>일정이 등록·수정·삭제될 때 휴대폰으로 알려 드립니다. 아이폰은 Safari 공유 메뉴에서 이 페이지를 홈 화면에 추가한 뒤, 추가한 아이콘으로 열어 주세요.</p><button id="on" disabled>알림 받기</button><button id="off" disabled>알림 끄기</button><p id="status" role="status">알림 서비스를 불러오는 중…</p><script defer src="https://cdn.onesignal.com/sdks/web/v16/OneSignalSDK.page.js" onerror="document.getElementById('status').textContent='알림 서비스를 불러오지 못했습니다.'"></script><script>
+window.OneSignalDeferred=window.OneSignalDeferred||[];
+window.OneSignalDeferred.push(async function(OneSignal){
+ const status=document.getElementById('status'),on=document.getElementById('on'),off=document.getElementById('off');
+ try{
+  await OneSignal.init({appId:'여기에_ONESIGNAL_APP_ID'});
+  if(!OneSignal.Notifications.isPushSupported()){status.textContent='이 환경에서는 푸시를 사용할 수 없습니다. 지원 브라우저 또는 홈 화면 앱에서 열어 주세요.';return;}
+  const sub=OneSignal.User.PushSubscription;
+  const update=()=>{status.textContent=(sub.optedIn&&sub.id)?'이 기기에 알림이 등록됐습니다.':'아직 알림이 등록되지 않았습니다. 차단된 경우 브라우저 설정에서 권한을 확인하세요.';};
+  sub.addEventListener('change',update);
+  on.disabled=off.disabled=false;
+  on.onclick=async()=>{try{await sub.optIn();update();}catch(e){status.textContent='알림 등록 실패. 사이트 알림 권한을 확인하세요.';}};
+  off.onclick=async()=>{try{await sub.optOut();update();}catch(e){status.textContent='알림을 끄지 못했습니다. 사이트 설정을 확인하세요.';}};
+  update();
+ }catch(e){status.textContent='알림 초기화 실패. App ID와 HTTPS 사이트 설정을 확인하세요.';}
+});
+</script></html>
